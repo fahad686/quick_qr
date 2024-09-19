@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:quick_qr/common/provider/provider.dart';
 
-import '../common/provider/provider.dart';
-
-class QRImageScreen extends ConsumerWidget {
-  QRImageScreen(this.controller, {super.key});
+class SaveImage extends ConsumerWidget {
+  SaveImage(this.controller, {super.key});
 
   final TextEditingController controller;
+  final GlobalKey _globalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final qrImageState = ref.watch(qrImageProvider);
+    final qrCodeNotifier = ref.read(saveImageProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -24,12 +24,16 @@ class QRImageScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Screenshot(
-                controller:
-                    ref.read(qrImageProvider.notifier).screenshotController,
-                child: QrImageView(
-                  data: controller.text,
-                  size: 280,
+              RepaintBoundary(
+                key: _globalKey,
+                child: Container(
+                  // width: 800,
+                  // height: 400,
+                  color: Colors.white,
+                  child: QrImageView(
+                    data: controller.text,
+                    size: 280,
+                  ),
                 ),
               ),
               SizedBox(height: 90),
@@ -38,9 +42,14 @@ class QRImageScreen extends ConsumerWidget {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await ref
-                          .read(qrImageProvider.notifier)
-                          .requestStoragePermission();
+                      // Request permission and save the QR code if granted
+                      bool permissionGranted =
+                          await qrCodeNotifier.requestPermission();
+                      if (permissionGranted) {
+                        await qrCodeNotifier.saveQRCodeImage(_globalKey);
+                      } else {
+                        Fluttertoast.showToast(msg: "Permission denied.");
+                      }
                     },
                     child: Column(
                       children: [
@@ -50,17 +59,6 @@ class QRImageScreen extends ConsumerWidget {
                     ),
                   ),
                 ],
-              ),
-              qrImageState.when(
-                data: (message) => Text(
-                  message,
-                  style: TextStyle(color: Colors.green),
-                ),
-                loading: () => CircularProgressIndicator(),
-                error: (error, stack) => Text(
-                  error.toString(),
-                  style: TextStyle(color: Colors.red),
-                ),
               ),
             ],
           ),

@@ -1,47 +1,58 @@
-import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 
-class QRImageNotifier extends StateNotifier<AsyncValue<String>> {
-  QRImageNotifier() : super(const AsyncValue.data(''));
+// StateNotifier class to handle QR code saving logic
+class QRCodeNotifier extends StateNotifier<bool> {
+  QRCodeNotifier() : super(false);
 
-  final ScreenshotController _screenshotController = ScreenshotController();
-
-  Future<void> requestStoragePermission() async {
-    state = const AsyncValue.loading();
+  // Function to request permission based on the platform
+  Future<bool> requestPermission() async {
+    bool statuses;
     try {
-      final status = await Permission.storage.request();
-      if (status.isGranted) {
-        await saveImage();
+      if (Platform.isAndroid) {
+        final deviceInfoPlugin = DeviceInfoPlugin();
+        final deviceInfo = await deviceInfoPlugin.androidInfo;
+        final sdkInt = deviceInfo.version.sdkInt;
+        statuses =
+            sdkInt < 29 ? await Permission.storage.request().isGranted : true;
       } else {
-        state =
-            AsyncValue.error('Storage permission denied', StackTrace.current);
+        statuses = await Permission.photosAddOnly.request().isGranted;
       }
-    } catch (e, st) {
-      state = AsyncValue.error('Permission request failed: $e', st);
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Permission error: $e');
+      return false;
     }
+    Fluttertoast.showToast(msg: 'Permission granted: $statuses');
+    return statuses;
   }
 
-  Future<void> saveImage() async {
+  // Function to save the QR code image to the gallery
+  Future<void> saveQRCodeImage(GlobalKey globalKey) async {
     try {
-      final Uint8List? uint8list = await _screenshotController.capture();
-      if (uint8list != null) {
-        final result = await ImageGallerySaver.saveImage(uint8list);
-        if (result["isSuccess"]) {
-          state = AsyncValue.data("Image saved to gallery");
-        } else {
-          state = AsyncValue.error('Failed to save image', StackTrace.current);
-        }
-      } else {
-        state =
-            AsyncValue.error('Screenshot capture failed', StackTrace.current);
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage();
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+
+      if (byteData != null) {
+        String picturesPath = "${DateTime.now().millisecondsSinceEpoch}.jpg";
+        final result = await SaverGallery.saveImage(
+            byteData.buffer.asUint8List(),
+            name: picturesPath,
+            androidExistNotSave: false);
+        Fluttertoast.showToast(msg: 'Saved: $result');
       }
-    } catch (e, st) {
-      state = AsyncValue.error('Error saving image: $e', st);
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error saving image: $e');
     }
   }
-
-  ScreenshotController get screenshotController => _screenshotController;
 }

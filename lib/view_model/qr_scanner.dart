@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class QrViewModel extends StateNotifier<AsyncValue<String?>> {
+class QrScanner extends StateNotifier<AsyncValue<String?>> {
   MobileScannerController scannerController = MobileScannerController();
 
-  QrViewModel() : super(const AsyncValue.data(null));
+  QrScanner() : super(const AsyncValue.data(null));
 
   // Function to scan QR Code
   void scanQrCode(Barcode barcode) {

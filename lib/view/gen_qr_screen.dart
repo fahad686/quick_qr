@@ -113,7 +113,7 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return QRImageScreen(controller);
+                          return SaveImage(controller);
                         },
                       ),
                     );
