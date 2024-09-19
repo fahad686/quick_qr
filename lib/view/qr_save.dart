@@ -20,48 +20,50 @@ class QRImageScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Screenshot(
-              controller:
-                  ref.read(qrImageProvider.notifier).screenshotController,
-              child: QrImageView(
-                data: controller.text,
-                size: 280,
-              ),
-            ),
-            SizedBox(height: 90),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await ref
-                            .read(qrImageProvider.notifier)
-                            .requestStoragePermission();
-                      },
-                      child: Icon(Icons.save, size: 34),
-                    ),
-                    Text("Save Gallery")
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Screenshot(
+                controller:
+                    ref.read(qrImageProvider.notifier).screenshotController,
+                child: QrImageView(
+                  data: controller.text,
+                  size: 280,
                 ),
-              ],
-            ),
-            qrImageState.when(
-              data: (message) => Text(
-                message,
-                style: TextStyle(color: Colors.green),
               ),
-              loading: () => CircularProgressIndicator(),
-              error: (error, stack) => Text(
-                error.toString(),
-                style: TextStyle(color: Colors.red),
+              SizedBox(height: 90),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      await ref
+                          .read(qrImageProvider.notifier)
+                          .requestStoragePermission();
+                    },
+                    child: Column(
+                      children: [
+                        Icon(Icons.save, size: 34),
+                        Text("Save Gallery")
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              qrImageState.when(
+                data: (message) => Text(
+                  message,
+                  style: TextStyle(color: Colors.green),
+                ),
+                loading: () => CircularProgressIndicator(),
+                error: (error, stack) => Text(
+                  error.toString(),
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

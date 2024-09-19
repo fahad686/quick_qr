@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'qr_save.dart';
+import 'qr_scanner.dart';
 
 class GenerateQRCode extends StatefulWidget {
   const GenerateQRCode({super.key});
@@ -12,6 +13,12 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
   TextEditingController controller = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedValue;
+  @override
+  void dispose() {
+    // Reset the controller and form when the widget is disposed
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +29,17 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Icon(
-              Icons.qr_code_scanner,
-              color: Colors.blue,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QrScannerScreen()),
+                );
+              },
+              child: Icon(
+                Icons.qr_code_scanner,
+                color: Colors.blue,
+              ),
             ),
           ),
         ],
