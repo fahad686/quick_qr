@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quick_qr/view/convert_image_text.dart';
+import 'qr_image_from_gallery.dart';
 import 'qr_save.dart';
 import 'qr_scanner.dart';
 
@@ -13,12 +15,6 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
   TextEditingController controller = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedValue;
-  @override
-  void dispose() {
-    // Reset the controller and form when the widget is disposed
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +22,26 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
       appBar: AppBar(
         title: const Text("Quick QR"),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => QrScannerScreen()),
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ImageToText()));
+              },
+              child: Icon(
+                Icons.file_open_outlined,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: GestureDetector(
+              onTap: () {
+                _showAlertDialog(context);
               },
               child: Icon(
                 Icons.qr_code_scanner,
@@ -125,6 +132,50 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Chose please '),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Icon(Icons.photo),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QrImageFromGallery()));
+                        },
+                        child: Text("Gallery")),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Icon(Icons.camera_alt),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QrScannerScreen()));
+                        },
+                        child: Text("Camera")),
+                  ],
+                )
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 }

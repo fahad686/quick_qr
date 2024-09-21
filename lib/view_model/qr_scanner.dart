@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:quick_qr/view/camera_scan_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class QrScanner extends StateNotifier<AsyncValue<String?>> {
@@ -8,18 +10,31 @@ class QrScanner extends StateNotifier<AsyncValue<String?>> {
 
   QrScanner() : super(const AsyncValue.data(null));
 
-  // Function to scan QR Code
-  void scanQrCode(Barcode barcode) {
+  void scanQrCode(Barcode barcode, BuildContext context) {
     final scannedValue = barcode.rawValue;
     state = AsyncValue.data(scannedValue);
 
-    // Automatically launch URL if it's a valid one
-    if (scannedValue != null && _isValidURL(scannedValue)) {
-      _launchURL(scannedValue);
+    if (scannedValue != null) {
+      // Show a message to notify the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Scanned complete!")),
+      );
+
+      scannerController.stop();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CameraScanScreen(),
+        ),
+      );
+
+      if (_isValidURL(scannedValue)) {
+        _launchURL(scannedValue);
+      }
     }
   }
 
-  // Function to toggle torch
   void toggleTorch() {
     try {
       scannerController.toggleTorch();
@@ -28,7 +43,6 @@ class QrScanner extends StateNotifier<AsyncValue<String?>> {
     }
   }
 
-  // Function to switch camera
   void switchCamera() {
     try {
       scannerController.switchCamera();
@@ -37,14 +51,15 @@ class QrScanner extends StateNotifier<AsyncValue<String?>> {
     }
   }
 
-  // Reset the QR data after scanning
   void resetData() {
     state = const AsyncValue.data(null);
+
+    // scannerController.start();
   }
 
   // Function to launch a URL
   Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(Uri.encodeFull(url)); // Properly encode the URL
+    final Uri uri = Uri.parse(Uri.encodeFull(url));
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {

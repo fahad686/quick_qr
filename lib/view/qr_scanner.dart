@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/services.dart';
+
 import '../common/provider/provider.dart';
 
 class QrScannerScreen extends ConsumerWidget {
@@ -19,7 +19,7 @@ class QrScannerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final qrState = ref.watch(qrProvider);
+    ref.watch(qrProvider);
     final qrViewModel = ref.read(qrProvider.notifier);
 
     requestCameraPermission();
@@ -38,15 +38,15 @@ class QrScannerScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 40),
-              // QR Scanner
-              Container(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Object Scanning...."),
+            const SizedBox(height: 40),
+            Center(
+              child: Container(
                 height: 300,
                 width: 250,
                 decoration:
@@ -55,57 +55,13 @@ class QrScannerScreen extends ConsumerWidget {
                   controller: qrViewModel.scannerController,
                   onDetect: (capture) {
                     final barcode = capture.barcodes.first;
-                    qrViewModel.scanQrCode(barcode);
+                    qrViewModel.scanQrCode(barcode, context);
                   },
                 ),
               ),
-              const SizedBox(height: 20),
-
-              // Show scanned QR code data with Copy & Open URL buttons
-              qrState.when(
-                data: (qrData) {
-                  if (qrData != null) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              qrData,
-                              style: const TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: qrData));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            "QR Code copied to clipboard")),
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.copy,
-                                  size: 15,
-                                  color: Colors.blue,
-                                ))
-                          ],
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Center(child: const Text("No QR code scanned"));
-                  }
-                },
-                loading: () => const CircularProgressIndicator(),
-                error: (error, _) => Text("Error: $error"),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
