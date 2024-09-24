@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:quick_qr/common/provider/provider.dart';
+import '../common/provider/provider.dart';
+import 'gen_qr_screen.dart';
 
 class SaveImage extends ConsumerWidget {
   SaveImage(this.controller, {super.key});
@@ -12,12 +13,23 @@ class SaveImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final qrCodeNotifier = ref.read(saveImageProvider.notifier);
+    final qrCodeNotifier = ref.read(shareSaveqr.notifier);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Quick QR"),
         centerTitle: true,
+        leading: IconButton.filledTonal(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const GenerateQRCode(),
+              ),
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -27,8 +39,6 @@ class SaveImage extends ConsumerWidget {
               RepaintBoundary(
                 key: _globalKey,
                 child: Container(
-                  // width: 800,
-                  // height: 400,
                   color: Colors.white,
                   child: QrImageView(
                     data: controller.text,
@@ -56,6 +66,15 @@ class SaveImage extends ConsumerWidget {
                         Icon(Icons.save, size: 34),
                         Text("Save Gallery")
                       ],
+                    ),
+                  ),
+                  SizedBox(width: 40),
+                  GestureDetector(
+                    onTap: () async {
+                      await qrCodeNotifier.shareQRCodeImage(_globalKey);
+                    },
+                    child: Column(
+                      children: [Icon(Icons.share, size: 34), Text("Share QR")],
                     ),
                   ),
                 ],

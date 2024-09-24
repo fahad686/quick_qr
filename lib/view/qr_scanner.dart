@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../common/provider/provider.dart';
 
@@ -10,19 +9,12 @@ class QrScannerScreen extends ConsumerWidget {
 
   final TextEditingController qrTextController = TextEditingController();
 
-  Future<void> requestCameraPermission() async {
-    var status = await Permission.camera.status;
-    if (!status.isGranted) {
-      await Permission.camera.request();
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(qrProvider);
-    final qrViewModel = ref.read(qrProvider.notifier);
+    final provider = ref.read(qrProvider.notifier);
 
-    requestCameraPermission();
+    provider.requestCameraPermission();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,11 +22,11 @@ class QrScannerScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.flip_camera_ios),
-            onPressed: () => qrViewModel.switchCamera(),
+            onPressed: () => provider.switchCamera(),
           ),
           IconButton(
             icon: const Icon(Icons.flash_on),
-            onPressed: () => qrViewModel.toggleTorch(),
+            onPressed: () => provider.toggleTorch(),
           ),
         ],
       ),
@@ -52,10 +44,10 @@ class QrScannerScreen extends ConsumerWidget {
                 decoration:
                     BoxDecoration(border: Border.all(color: Colors.blue)),
                 child: MobileScanner(
-                  controller: qrViewModel.scannerController,
+                  controller: provider.scannerController,
                   onDetect: (capture) {
                     final barcode = capture.barcodes.first;
-                    qrViewModel.scanQrCode(barcode, context);
+                    provider.scanQrCode(barcode, context);
                   },
                 ),
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quick_qr/view/convert_image_text.dart';
-import 'qr_image_from_gallery.dart';
+import 'imgfunction.dart';
 import 'qr_save.dart';
 import 'qr_scanner.dart';
 
@@ -28,10 +28,12 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ImageToText()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ImageToText()),
+                );
               },
-              child: Icon(
+              child: const Icon(
                 Icons.file_open_outlined,
                 color: Colors.blue,
               ),
@@ -43,7 +45,7 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
               onTap: () {
                 _showAlertDialog(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.qr_code_scanner,
                 color: Colors.blue,
               ),
@@ -65,8 +67,13 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
                   labelText: 'Select Type of QR code',
                 ),
                 value: selectedValue,
-                items: <String>['Gmail', 'Phone number', 'Web URL', 'Address']
-                    .map((String value) {
+                items: <String>[
+                  'Gmail',
+                  'Phone number',
+                  'Web URL',
+                  'YouTube',
+                  'Address'
+                ].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -94,21 +101,26 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
                   }
+
                   // Custom validation based on the selected dropdown value
                   if (selectedValue == 'Gmail') {
-                    if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value)) {
+                    // Validate for Gmail format
+                    if (!RegExp(r'^[\w\.\-]+@gmail\.com$').hasMatch(value)) {
                       return 'Please enter a valid Gmail address';
                     }
                   } else if (selectedValue == 'Phone number') {
-                    if (!RegExp(r'^\+[1-9]\d{1,14}$').hasMatch(value)) {
+                    // Validate for Phone number format
+                    if (!RegExp(r'^\+?[1-9]\d{1,14}$').hasMatch(value)) {
                       return 'Please enter a valid international phone number';
                     }
                   } else if (selectedValue == 'Web URL') {
-                    if (!Uri.tryParse(value)!.isAbsolute) {
+                    // URL validation for general websites
+                    final Uri? parsedUrl = Uri.tryParse(value);
+                    if (parsedUrl == null || !parsedUrl.isAbsolute) {
                       return 'Please enter a valid URL';
                     }
                   }
+
                   return null;
                 },
               ),
@@ -116,11 +128,23 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.push(
+                    // Prepare data to generate the QR code
+                    String qrData = controller.text;
+
+                    if (selectedValue == 'Gmail') {
+                      qrData =
+                          'mailto:${controller.text}'; // For Gmail, add mailto:
+                    } else if (selectedValue == 'Phone number') {
+                      qrData =
+                          'tel:${controller.text}'; // For phone numbers, add tel:
+                    }
+
+                    // Navigate to the SaveImage screen with the formatted qrData
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return SaveImage(controller);
+                          return SaveImage(TextEditingController(text: qrData));
                         },
                       ),
                     );
@@ -135,40 +159,47 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
     );
   }
 
+  // Dialog to choose between Gallery and Camera for scanning
   void _showAlertDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Chose please '),
+          title: const Text('Choose QR Scanning Method'),
           actions: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   children: [
-                    Icon(Icons.photo),
+                    const Icon(Icons.photo),
                     TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => QrImageFromGallery()));
-                        },
-                        child: Text("Gallery")),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImgScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("Gallery"),
+                    ),
                   ],
                 ),
                 Column(
                   children: [
-                    Icon(Icons.camera_alt),
+                    const Icon(Icons.camera_alt),
                     TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => QrScannerScreen()));
-                        },
-                        child: Text("Camera")),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => QrScannerScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("Camera"),
+                    ),
                   ],
                 )
               ],

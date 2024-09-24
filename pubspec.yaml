@@ -41,10 +41,11 @@ dependencies:
   mobile_scanner: ^5.2.3
   url_launcher: ^6.3.0
   device_info_plus: ^10.1.2
-  saver_gallery: ^3.0.6
   fluttertoast: ^8.2.8
   image_picker: ^1.1.2
   google_ml_kit: ^0.18.1
+  share_plus: ^10.0.2
+  saver_gallery: ^3.0.6
  
 
 

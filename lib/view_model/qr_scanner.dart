@@ -2,7 +2,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:quick_qr/view/camera_scan_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:quick_qr/view/data_camera_scan_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class QrScanner extends StateNotifier<AsyncValue<String?>> {
@@ -40,6 +41,14 @@ class QrScanner extends StateNotifier<AsyncValue<String?>> {
       scannerController.toggleTorch();
     } catch (e) {
       log('Torch toggle error: $e');
+    }
+  }
+
+  ////////
+  Future<void> requestCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+      await Permission.camera.request();
     }
   }
 

@@ -1,19 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
+import 'dart:ui';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:saver_gallery/saver_gallery.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui' as ui;
 
-// StateNotifier class to handle QR code saving logic
-class QRCodeNotifier extends StateNotifier<bool> {
-  QRCodeNotifier() : super(false);
+class QRCodeNotifier extends StateNotifier<void> {
+  QRCodeNotifier() : super(null);
 
-  // Function to request permission based on the platform
   Future<bool> requestPermission() async {
     bool statuses;
     try {
@@ -53,6 +54,28 @@ class QRCodeNotifier extends StateNotifier<bool> {
       }
     } catch (e) {
       Fluttertoast.showToast(msg: 'Error saving image: $e');
+    }
+  }
+
+  // Method to share the QR code image
+  Future<void> shareQRCodeImage(GlobalKey globalKey) async {
+    try {
+      // Convert the widget to an image
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final image = await boundary.toImage();
+      final byteData = await image.toByteData(format: ImageByteFormat.png);
+      final Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      // Save the image temporarily
+      final tempDir = await getTemporaryDirectory();
+      final file = await File('${tempDir.path}/qr_code.png').create();
+      await file.writeAsBytes(pngBytes);
+
+      // Use share_plus to share the image
+      await Share.shareXFiles([XFile(file.path)], text: 'Here is my QR code!');
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Error sharing QR code: $e");
     }
   }
 }
