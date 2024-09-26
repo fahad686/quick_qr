@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../common/provider/provider.dart';
@@ -39,16 +40,39 @@ class QrScannerScreen extends ConsumerWidget {
             const SizedBox(height: 40),
             Center(
               child: Container(
-                height: 300,
-                width: 250,
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.blue)),
-                child: MobileScanner(
-                  controller: provider.scannerController,
-                  onDetect: (capture) {
-                    final barcode = capture.barcodes.first;
-                    provider.scanQrCode(barcode, context);
-                  },
+                height: 350,
+                width: 300,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 25,
+                      child: Container(
+                        height: 300,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue)),
+                        child: MobileScanner(
+                          controller: provider.scannerController,
+                          onDetect: (capture) {
+                            final barcode = capture.barcodes.first;
+                            provider.scanQrCode(barcode, context);
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 85,
+                      bottom: 30,
+                      child: Container(
+                        height: 370,
+                        width: 250,
+                        child: LottieBuilder.asset(
+                          'lottie/qr_scanner.json',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

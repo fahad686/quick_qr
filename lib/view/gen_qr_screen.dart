@@ -22,10 +22,10 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
       appBar: AppBar(
         title: const Text("Quick QR"),
         centerTitle: true,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -35,18 +35,6 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
               },
               child: const Icon(
                 Icons.file_open_outlined,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: GestureDetector(
-              onTap: () {
-                _showAlertDialog(context);
-              },
-              child: const Icon(
-                Icons.qr_code_scanner,
                 color: Colors.blue,
               ),
             ),
@@ -61,6 +49,31 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Center(
+                child: Container(
+                  height: 300,
+                  width: 800,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.black, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(2, 2),
+                        blurRadius: 5,
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: AssetImage('images/quick_qr.jpeg'),
+                      // fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -151,6 +164,9 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
                   }
                 },
                 child: const Text('Generate QR Code'),
+              ),
+              SizedBox(
+                height: 50,
               ),
             ],
           ),

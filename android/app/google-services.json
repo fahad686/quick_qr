@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "810549456594",
+    "project_id": "quick-qr-14235",
+    "storage_bucket": "quick-qr-14235.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810549456594:android:85b0e2c6bff454c8fc470b",
+        "android_client_info": {
+          "package_name": "com.example.quick_qr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP1Jxn6d6rSMtgDEAK8j9E4l1821jdamo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
