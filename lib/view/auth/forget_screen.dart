@@ -26,7 +26,7 @@ class ForgetScreen extends ConsumerWidget {
               children: [
                 const SizedBox(height: 60),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     height: 200,
                     width: 200,
                     child: LottieBuilder.asset(
@@ -63,13 +63,6 @@ class ForgetScreen extends ConsumerWidget {
                                   .resetPassword(_emailController.text.trim());
                             }
                           },
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 42, 28, 246),
@@ -79,13 +72,20 @@ class ForgetScreen extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 12),
                           ),
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
                         ),
-                    loading: () => CircularProgressIndicator(),
+                    loading: () => const CircularProgressIndicator(),
                     error: (error, stack) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text(
+                          const SnackBar(
+                            content: Text(
                               'Something went wrong!',
                               style: TextStyle(color: Colors.white),
                             ),
@@ -93,7 +93,7 @@ class ForgetScreen extends ConsumerWidget {
                           ),
                         );
                       });
-                      return SizedBox();
+                      return const SizedBox();
                     }),
               ],
             ),

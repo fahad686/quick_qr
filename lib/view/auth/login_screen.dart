@@ -27,7 +27,7 @@ class LogInScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 60),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     height: 200,
                     width: 200,
                     child: LottieBuilder.asset(
@@ -115,6 +115,14 @@ class LogInScreen extends StatelessWidget {
                               context);
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 42, 28, 246),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                      ),
                       child: authState.when(
                         data: (_) => const Text(
                           'LogIn',
@@ -150,14 +158,6 @@ class LogInScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 42, 28, 246),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 12),
                       ),
                     );
                   },

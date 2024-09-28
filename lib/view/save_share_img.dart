@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../common/provider/provider.dart';
-import 'gen_qr_screen.dart';
 
 class SaveImage extends ConsumerWidget {
   SaveImage(this.controller, {super.key});
@@ -19,16 +18,17 @@ class SaveImage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Quick QR"),
         centerTitle: true,
-        leading: IconButton.filledTonal(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const GenerateQRCode(),
-              ),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purpleAccent, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
         ),
       ),
       body: Center(
@@ -46,7 +46,7 @@ class SaveImage extends ConsumerWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 90),
+              const SizedBox(height: 90),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -61,19 +61,19 @@ class SaveImage extends ConsumerWidget {
                         Fluttertoast.showToast(msg: "Permission denied.");
                       }
                     },
-                    child: Column(
+                    child: const Column(
                       children: [
                         Icon(Icons.save, size: 34),
                         Text("Save Gallery")
                       ],
                     ),
                   ),
-                  SizedBox(width: 40),
+                  const SizedBox(width: 40),
                   GestureDetector(
                     onTap: () async {
                       await qrCodeNotifier.shareQRCodeImage(_globalKey);
                     },
-                    child: Column(
+                    child: const Column(
                       children: [Icon(Icons.share, size: 34), Text("Share QR")],
                     ),
                   ),

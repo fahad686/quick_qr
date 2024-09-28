@@ -11,9 +11,8 @@ class Imgfunction extends StateNotifier<File?> {
 
   File? _image;
   final ImagePicker _picker = ImagePicker();
-  String scannedData = ""; // To hold the scanned QR code data
+  String scannedData = "";
 
-  /// Pick image from gallery and start scanning
   Future<void> pickQr(BuildContext context) async {
     final PickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (PickedFile != null) {
@@ -23,7 +22,6 @@ class Imgfunction extends StateNotifier<File?> {
     }
   }
 
-  /// Scan QR code from the selected image
   Future<void> scanQrImage(File image, BuildContext context) async {
     final inputimage = InputImage.fromFile(image);
     final barcodeScan = BarcodeScanner();
@@ -37,9 +35,7 @@ class Imgfunction extends StateNotifier<File?> {
           scannedData = qrCodeData;
         }
 
-        // Navigate to the result screen with the scanned QR code data
-
-        Future.delayed(Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 2), () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -51,5 +47,10 @@ class Imgfunction extends StateNotifier<File?> {
     } catch (e) {
       scannedData = "Error scanning QR code: $e";
     }
+  }
+
+  void clearData() {
+    state = null;
+    scannedData = '';
   }
 }

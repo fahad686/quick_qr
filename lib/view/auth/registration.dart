@@ -28,7 +28,7 @@ class RegistrationScreen extends StatelessWidget {
                 Consumer(builder: (context, WidgetRef ref, child) {
                   final imageFile = ref.watch(imagePickerProvider);
                   return Center(
-                    child: Container(
+                    child: SizedBox(
                       height: 150,
                       width: 200,
                       child: Stack(
@@ -46,7 +46,7 @@ class RegistrationScreen extends StatelessWidget {
                                     child: Container(
                                       width: 120,
                                       height: 120,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
@@ -168,6 +168,14 @@ class RegistrationScreen extends StatelessWidget {
                               );
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 42, 28, 246),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                      ),
                       child: authState.when(
                         data: (_) => const Text(
                           'Register',
@@ -203,14 +211,6 @@ class RegistrationScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 42, 28, 246),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 12),
                       ),
                     );
                   },
@@ -251,7 +251,7 @@ class RegistrationScreen extends StatelessWidget {
   void _showImagePickerOptions(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
@@ -264,7 +264,7 @@ class RegistrationScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text(
+                title: const Text(
                   'Choose an option',
                   style: TextStyle(
                     fontSize: 18,
@@ -275,21 +275,22 @@ class RegistrationScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).pop();
                     },
-                    child: Icon(Icons.cancel, color: Colors.red)),
+                    child: const Icon(Icons.cancel, color: Colors.red)),
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                leading: Icon(Icons.camera_alt, color: Colors.blue),
-                title: Text('Take a photo', style: TextStyle(fontSize: 16)),
+                leading: const Icon(Icons.camera_alt, color: Colors.blue),
+                title:
+                    const Text('Take a photo', style: TextStyle(fontSize: 16)),
                 onTap: () {
                   Navigator.of(context).pop();
                   ref.read(imagePickerProvider.notifier).pickImageFromCamera();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library, color: Colors.green),
-                title:
-                    Text('Choose from gallery', style: TextStyle(fontSize: 16)),
+                leading: const Icon(Icons.photo_library, color: Colors.green),
+                title: const Text('Choose from gallery',
+                    style: TextStyle(fontSize: 16)),
                 onTap: () {
                   Navigator.of(context).pop();
                   ref.read(imagePickerProvider.notifier).pickImageFromGallery();

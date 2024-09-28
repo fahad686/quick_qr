@@ -6,7 +6,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../common/provider/provider.dart';
 
 class QrScannerScreen extends ConsumerWidget {
-  QrScannerScreen({Key? key}) : super(key: key);
+  QrScannerScreen({super.key});
 
   final TextEditingController qrTextController = TextEditingController();
 
@@ -20,6 +20,18 @@ class QrScannerScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("QR Scanner"),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purpleAccent, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.flip_camera_ios),
@@ -36,10 +48,10 @@ class QrScannerScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Object Scanning...."),
+            const Text("Object Scanning...."),
             const SizedBox(height: 40),
             Center(
-              child: Container(
+              child: SizedBox(
                 height: 350,
                 width: 300,
                 child: Stack(
@@ -63,7 +75,7 @@ class QrScannerScreen extends ConsumerWidget {
                     Positioned(
                       right: 85,
                       bottom: 30,
-                      child: Container(
+                      child: SizedBox(
                         height: 370,
                         width: 250,
                         child: LottieBuilder.asset(

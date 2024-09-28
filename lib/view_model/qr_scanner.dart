@@ -26,7 +26,7 @@ class QrScanner extends StateNotifier<AsyncValue<String?>> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CameraScanScreen(),
+          builder: (context) => const CameraScanScreen(),
         ),
       );
 

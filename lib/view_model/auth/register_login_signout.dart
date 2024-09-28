@@ -4,15 +4,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quick_qr/view/home/home_screen.dart';
 import '../../model/auth_model.dart';
-import '../../view/gen_qr_screen.dart';
 
 class AuthNotifier extends StateNotifier<AsyncValue<UserModel?>> {
-  AuthNotifier() : super(const AsyncValue.data(null));
+  AuthNotifier() : super(const AsyncValue.data(null)) {
+    checkUserLoggedIn();
+  }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future<void> checkUserLoggedIn() async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot<Map<String, dynamic>> userDoc =
+            await _firestore.collection('users').doc(currentUser.uid).get();
+
+        UserModel fetchedUser = UserModel.fromMap(userDoc.data()!);
+        state = AsyncValue.data(fetchedUser);
+      } catch (e) {
+        state = AsyncValue.error(e, StackTrace.current);
+      }
+    } else {
+      state = const AsyncValue.data(null); // User is not logged in
+    }
+  }
 
   Future<String?> _uploadProfileImage(File image, String uid) async {
     try {
@@ -64,7 +83,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserModel?>> {
         state = AsyncValue.data(newUser);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const GenerateQRCode()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       }
     } catch (e) {
@@ -93,7 +112,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const GenerateQRCode()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       }
     } catch (e) {

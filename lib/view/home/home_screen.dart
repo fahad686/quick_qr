@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quick_qr/view/home/drawar.dart';
-
 import '../gen_qr_screen.dart';
 import '../imgfunction.dart';
+import '../../common/widget/custonbtn.dart';
 import '../qr_scanner.dart';
 import 'curser_slider.dart';
 
@@ -12,13 +12,25 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       appBar: AppBar(
-        title: Text("Quick Qr"),
+        title: const Text("Quick Qr"),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purpleAccent, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         centerTitle: true,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: EdgeInsets.symmetric(horizontal: 14),
             child: Icon(Icons.more_vert_outlined),
           ),
         ],
@@ -26,91 +38,40 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text(
+            "Users This Application",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           QrCarouselSlider(),
-          SizedBox(
-            height: 60,
+          const SizedBox(
+            height: 50,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              GestureDetector(
+              CustomButton(
+                label: "Generate QR",
+                imagePath: 'images/quick_qr.jpeg',
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => GenerateQRCode()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const GenerateQRCode()));
                 },
-                child: Column(
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.black, width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            offset: Offset(2, 2),
-                            blurRadius: 5,
-                          ),
-                        ],
-                        image: DecorationImage(
-                          image: AssetImage('images/quick_qr.jpeg'),
-                          // fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Genrate Qr",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    )
-                  ],
-                ),
               ),
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      _showAlertDialog(context);
-                    },
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.black, width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            offset: Offset(2, 2),
-                            blurRadius: 5,
-                          ),
-                        ],
-                        image: DecorationImage(
-                          image: AssetImage('images/qr-code-scan.png'),
-                          // fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Scan Qr",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  )
-                ],
+              CustomButton(
+                label: "Scan QR",
+                imagePath: 'images/qr-code-scan.png',
+                onTap: () {
+                  _showAlertDialog(context);
+                },
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 110,
           ),
         ],
@@ -118,51 +79,73 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Dialog to choose between Gallery and Camera for scanning
   void _showAlertDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Choose QR Scanning Method'),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            'Choose QR Scanning ',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.photo, size: 40, color: Colors.blue),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ImgScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  const Text("Gallery", style: TextStyle(fontSize: 16)),
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.camera_alt,
+                        size: 40, color: Colors.green),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QrScannerScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  const Text("Camera", style: TextStyle(fontSize: 16)),
+                ],
+              )
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
           actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    const Icon(Icons.photo),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImgScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text("Gallery"),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const Icon(Icons.camera_alt),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => QrScannerScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text("Camera"),
-                    ),
-                  ],
-                )
-              ],
-            )
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
           ],
         );
       },

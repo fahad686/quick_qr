@@ -17,7 +17,11 @@ class MyDrawer extends ConsumerWidget {
           userAsyncValue.when(
             data: (user) => DrawerHeader(
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 30, 33, 242),
+                gradient: LinearGradient(
+                  colors: [Colors.purpleAccent, Colors.deepPurple],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,7 +31,7 @@ class MyDrawer extends ConsumerWidget {
                     radius: 45,
                     // ignore: unnecessary_null_comparison
                     backgroundImage: user.profileImageUrl != null
-                        ? NetworkImage(user.profileImageUrl!)
+                        ? NetworkImage(user.profileImageUrl)
                         : const AssetImage('images/user.png') as ImageProvider,
                   ),
                   const SizedBox(height: 10),
@@ -99,7 +103,7 @@ class MyDrawer extends ConsumerWidget {
                 radius: 30,
                 // ignore: unnecessary_null_comparison
                 backgroundImage: user.profileImageUrl != null
-                    ? NetworkImage(user.profileImageUrl!)
+                    ? NetworkImage(user.profileImageUrl)
                     : const AssetImage('images/user.png') as ImageProvider,
               ),
               title: Text(

@@ -4,6 +4,8 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'dart:io';
 
 class ImageToText extends StatefulWidget {
+  const ImageToText({super.key});
+
   @override
   _ImageToTextState createState() => _ImageToTextState();
 }
@@ -59,8 +61,8 @@ class _ImageToTextState extends State<ImageToText> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('No Text Found'),
-            content: Text(
+            title: const Text('No Text Found'),
+            content: const Text(
               'No text could be scanned from the image.',
               style: TextStyle(color: Colors.red),
             ),
@@ -69,7 +71,7 @@ class _ImageToTextState extends State<ImageToText> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -81,13 +83,13 @@ class _ImageToTextState extends State<ImageToText> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Scanned Text'),
+            title: const Text('Scanned Text'),
             content: SingleChildScrollView(
               child: Column(
                 children: [
                   Text(
                     scannedText,
-                    style: TextStyle(color: Colors.amber),
+                    style: const TextStyle(color: Colors.amber),
                   ),
                 ],
               ),
@@ -97,7 +99,7 @@ class _ImageToTextState extends State<ImageToText> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -110,7 +112,20 @@ class _ImageToTextState extends State<ImageToText> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Scanner'),
+        title: const Text('Image Scanner'),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purpleAccent, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -119,19 +134,19 @@ class _ImageToTextState extends State<ImageToText> {
               _image!,
               height: 300,
             ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           //Text(scannedData),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
                 onPressed: () => pickImage(ImageSource.camera),
-                child: Text('Pick from Camera'),
+                child: const Text('Pick from Camera'),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () => pickImage(ImageSource.gallery),
-                child: Text('Pick from Gallery'),
+                child: const Text('Pick from Gallery'),
               ),
             ],
           ),
