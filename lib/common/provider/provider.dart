@@ -16,13 +16,12 @@ final shareSaveqr = StateNotifierProvider<QRCodeNotifier, void>((ref) {
 
 /////////////////////////////////////////////////////
 
-final qrProvider =
-    StateNotifierProvider.autoDispose<QrScanner, AsyncValue<String?>>(
+final qrProvider = StateNotifierProvider<QrScanner, AsyncValue<String?>>(
   (ref) => QrScanner(),
 );
 
-final imgprovider = StateNotifierProvider.autoDispose<Imgfunction, File?>(
-    (ref) => Imgfunction());
+final imgprovider =
+    StateNotifierProvider<Imgfunction, File?>((ref) => Imgfunction());
 
 ///////////////////////
 final imagePickerProvider = StateNotifierProvider<ImagePickerNotifier, File?>(

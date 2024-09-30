@@ -15,14 +15,12 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller1;
-  late AnimationController _controller2;
+
   late Animation<double> _animation1;
-  late Animation<double> _animation2;
 
   @override
   void initState() {
     super.initState();
-
 
     _controller1 = AnimationController(
       duration: const Duration(seconds: 2),
@@ -34,26 +32,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         setState(() {});
       });
 
-
-    _controller2 = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-
-    _animation2 = Tween<double>(begin: 0.0, end: 1.0).animate(_controller2)
-      ..addListener(() {
-        setState(() {});
-      });
-
-
     _controller1.forward();
 
-
-    Future.delayed(const Duration(seconds: 2), () {
-      _controller2.forward();
-    });
-
-  
     Future.delayed(const Duration(seconds: 5), () {
       _checkAuthState();
     });
@@ -62,7 +42,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   @override
   void dispose() {
     _controller1.dispose();
-    _controller2.dispose();
+
     super.dispose();
   }
 
@@ -90,30 +70,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-           
-            Opacity(
-              opacity: _animation1.value,
-              child: Image.asset(
-                'images/qr-code-scan.png',
-                width: 150,
-                height: 150,
-              ),
-            ),
-            const SizedBox(height: 20),
-       
-            Opacity(
-              
-              opacity: _animation2.value,
-              child: Image.asset(
-                'images/quick_qr.jpeg',
-                width: 150,
-                height: 150,
-              ),
-            ),
-          ],
+        child: Opacity(
+          opacity: _animation1.value,
+          child: Image.asset(
+            'images/ic_launcher.gif',
+            width: 250,
+            height: 250,
+          ),
         ),
       ),
     );

@@ -28,6 +28,8 @@
 
 
     <application
+
+   
         android:label="quick_qr"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

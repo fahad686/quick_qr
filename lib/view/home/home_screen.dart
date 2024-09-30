@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
               ),
               CustomButton(
                 label: "Scan QR",
-                imagePath: 'images/qr-code-scan.png',
+                imagePath: 'images/ic_launcher.png',
                 onTap: () {
                   _showAlertDialog(context);
                 },
