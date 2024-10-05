@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../common/widget/animation.dart';
+import '../../common/widget/animation.dart';
+import '../convert_image_text.dart';
 import 'save_share_img.dart';
 import 'qr_scanner.dart';
 import 'imgfunction.dart';
-import 'convert_image_text.dart';
 
 class GenerateQRCode extends StatefulWidget {
   const GenerateQRCode({super.key});

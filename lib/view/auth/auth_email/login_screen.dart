@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:quick_qr/view/auth/forget_screen.dart';
-import 'package:quick_qr/view/auth/registration.dart';
 
-import '../../common/provider/provider.dart';
-import '../../common/widget/textfield.dart';
+import '../../../common/provider/provider.dart';
+import '../../../common/widget/textfield.dart';
+import '../auth_google/googleauth.dart';
+import 'forget_screen.dart';
+import 'registration.dart';
 
 class LogInScreen extends StatelessWidget {
   LogInScreen({super.key});
@@ -17,6 +18,9 @@ class LogInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(22.0),
         child: Form(
@@ -25,7 +29,7 @@ class LogInScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: 16),
                 Center(
                   child: SizedBox(
                     height: 200,
@@ -162,6 +166,7 @@ class LogInScreen extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 40),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -52,8 +52,10 @@ dependencies:
   saver_gallery: ^3.0.6
   lottie: ^3.1.2
   carousel_slider: ^5.0.0
-  rive: ^0.13.13
-  # google_mobile_ads: ^5.1.0
+  intl_phone_number_input: ^0.7.4
+  pin_code_fields: ^8.0.1
+  google_sign_in: ^6.2.1
+  
  
 
 

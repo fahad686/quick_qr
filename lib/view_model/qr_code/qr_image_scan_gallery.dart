@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import '../view/data_gallery_image_scan.dart';
+
+import '../../view/qr_code_screen/data_gallery_image_scan.dart';
 
 // StateNotifier for managing the image and QR code scanning
 class Imgfunction extends StateNotifier<File?> {

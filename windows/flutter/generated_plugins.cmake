@@ -9,7 +9,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_core
   firebase_storage
   permission_handler_windows
-  rive_common
   share_plus
   url_launcher_windows
 )

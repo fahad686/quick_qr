@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/provider/provider.dart';
+import '../../common/provider/provider.dart';
 
 class ImgScreen extends ConsumerWidget {
   const ImgScreen({super.key});

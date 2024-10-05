@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:quick_qr/view/data_camera_scan_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../view/qr_code_screen/data_camera_scan_screen.dart';
 
 class QrScanner extends StateNotifier<AsyncValue<String?>> {
   MobileScannerController scannerController = MobileScannerController();

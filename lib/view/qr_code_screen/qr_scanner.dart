@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../common/provider/provider.dart';
+import '../../common/provider/provider.dart';
 
 class QrScannerScreen extends ConsumerWidget {
   QrScannerScreen({super.key});

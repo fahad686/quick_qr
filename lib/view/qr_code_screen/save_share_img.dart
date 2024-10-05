@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import '../common/provider/provider.dart';
+
+import '../../common/provider/provider.dart';
 
 class SaveImage extends ConsumerWidget {
   SaveImage(this.controller, {super.key});

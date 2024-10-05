@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'splash_screen.dart';
+import 'package:quick_qr/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme:
           ThemeData(primaryColor: Colors.black54, primarySwatch: Colors.brown),
-      home: const SplashScreen(),
+      home: SplashScreen(),
+      //QuickMainScreen(),
+      //LogInScreen(),
     );
   }
 }

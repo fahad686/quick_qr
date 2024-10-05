@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common/provider/provider.dart'; // Ensure this imports your 'userProvider'
-import '../auth/login_screen.dart';
+import 'package:quick_qr/view/auth/auth_phone/quickmainscreen.dart';
+import '../../common/provider/provider.dart';
 
 class MyDrawer extends ConsumerWidget {
   const MyDrawer({super.key});
@@ -150,7 +150,7 @@ class MyDrawer extends ConsumerWidget {
                           ref.read(authProvider.notifier).logout();
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                                builder: (context) => LogInScreen()),
+                                builder: (context) => QuickMainScreen()),
                           );
                         },
                         child: const Text("Yes"),

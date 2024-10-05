@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quick_qr/view/home/drawar.dart';
-import '../gen_qr_screen.dart';
-import '../imgfunction.dart';
 import '../../common/widget/custonbtn.dart';
-import '../qr_scanner.dart';
+import '../qr_code_screen/gen_qr_screen.dart';
+import '../qr_code_screen/imgfunction.dart';
+import '../qr_code_screen/qr_scanner.dart';
 import 'curser_slider.dart';
 
 class HomeScreen extends StatelessWidget {

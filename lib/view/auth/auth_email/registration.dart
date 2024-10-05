@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import '../../common/provider/provider.dart';
-import '../../common/widget/textfield.dart';
+
+import '../../../common/provider/provider.dart';
+import '../../../common/widget/textfield.dart';
 import 'login_screen.dart';
 
 class RegistrationScreen extends StatelessWidget {

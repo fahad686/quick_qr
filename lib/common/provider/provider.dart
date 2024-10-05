@@ -3,11 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../model/auth_model.dart';
-import '../../view_model/auth/pic_img.dart';
+import '../../view_model/auth/google_Signin.dart';
 import '../../view_model/auth/register_login_signout.dart';
-import '../../view_model/qr_image_scan_gallery.dart';
-import '../../view_model/qr_scanner.dart';
-import '../../view_model/share_save_qr.dart';
+import '../../view_model/qr_code/pic_img.dart';
+import '../../view_model/qr_code/qr_image_scan_gallery.dart';
+import '../../view_model/qr_code/qr_scanner.dart';
+import '../../view_model/qr_code/share_save_qr.dart';
 
 // Define a provider for QRCodeNotifier
 final shareSaveqr = StateNotifierProvider<QRCodeNotifier, void>((ref) {
@@ -53,4 +54,9 @@ final allusersProvider = StreamProvider<List<UserModel>>((ref) {
       return snapshot.docs.map((doc) => UserModel.fromMap(doc.data())).toList();
     },
   );
+});
+/////////////////////////
+final googleAuthProvider =
+    StateNotifierProvider<GoogleAuthState, AsyncValue<User?>>((ref) {
+  return GoogleAuthState();
 });

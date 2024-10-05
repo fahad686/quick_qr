@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quick_qr/view/home/home_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../common/provider/provider.dart';
+
+import '../../common/provider/provider.dart';
 
 class CameraScanScreen extends ConsumerWidget {
   const CameraScanScreen({super.key});
